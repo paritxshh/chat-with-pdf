@@ -38,8 +38,8 @@ export default function RootLayout({
         <html lang="en">
           <body className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}>
             {children}
+            <Toaster />
           </body>
-          <Toaster />
         </html>
       </Providers>
     </ClerkProvider>
