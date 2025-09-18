@@ -46,7 +46,8 @@ function ChatComponent({ chatId }: Props) {
                     messages: [...messages, userMessage].map(msg => ({
                         role: msg.role,
                         content: msg.parts[0].text
-                    }))
+                    })),
+                    chatId: chatId
                 })
             });
             
@@ -78,14 +79,14 @@ function ChatComponent({ chatId }: Props) {
     }, [messages])
 
     return (
-        <div className='relative max-h-screen overflow-scroll' id='message-container'>
+        <div className='relative flex flex-col h-full' id='message-container'>
             <div className='sticky top-0 inset-x-0 p-2 bg-white h-fit'>
-                <h3 className='text-xl font-bold'>Chat</h3>
+                <h3 className='text-xl font-bold font-poppins'>Chat</h3>
             </div>
 
-            <MessageList messages={messages}/>
+            <MessageList messages={messages} isLoading={isLoading}/>
 
-            <form onSubmit={handleSubmit} className='sticky bottom-0 inset-x-0 px-2 py-4 bg-white'>
+            <form onSubmit={handleSubmit} className='p-2 bg-white'>
                 <div className="flex">
                     <Input 
                         value={input} 

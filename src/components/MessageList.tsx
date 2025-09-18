@@ -1,16 +1,18 @@
 import { cn } from '@/lib/utils'
 import { UIMessage } from '@ai-sdk/react';
 import React from 'react'
+import LoadingDots from './LoadingDots'
 
 type Props = {
     messages: UIMessage[]
+    isLoading?: boolean
 }
 
-const MessageList = ({ messages }: Props) => {
-    if (!messages) return <></>
+const MessageList = ({ messages, isLoading }: Props) => {
+    if (!messages) return <div className='flex-1'></div>
     
     return (
-        <div className='flex flex-col gap-2 px-4'>
+        <div className='flex flex-col flex-1 gap-4 px-4'>   
             {messages.map(message => {
                 return (
                     <div key={message.id} className={
@@ -20,7 +22,7 @@ const MessageList = ({ messages }: Props) => {
                         })
                     }>
                         <div className={
-                            cn('rounded-lg px-3 text-sm py-1 shadow-md ring-1 ring-gray-900/10', {
+                            cn('rounded-lg px-3 text-sm py-2 shadow-md ring-1 ring-gray-900/10 font-poppins', {
                                 'bg-blue-600 text-white': message.role === 'user',
                             })
                         }>
@@ -29,6 +31,7 @@ const MessageList = ({ messages }: Props) => {
                     </div>
                 )
             })}
+            {isLoading && <LoadingDots />}
         </div>
     )
 }

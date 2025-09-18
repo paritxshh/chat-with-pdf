@@ -39,14 +39,20 @@ export async function loadS3IntoPinecone(fileKey: string) {
     if (!file_name) {
         throw new Error('Failed to download from s3');
     }
+    console.log('Downloaded file:', file_name);
+    
     const loader = new PDFLoader(file_name);
     const pages = (await loader.load()) as PDFPage[];
+    console.log('Loaded PDF pages:', pages.length);
 
     // 2. split and segment the pdf into smaller documents
     const documents = await Promise.all(pages.map(prepareDocument));
+    console.log('Prepared documents:', documents.flat().length);
 
     // 3. vectorize and embed individual documents
+    console.log('Creating embeddings...');
     const vectors = await Promise.all(documents.flat().map(embedDocuments));
+    console.log('Created vectors:', vectors.length);
 
     // 4. upload to pinecone
     const client = await getPineconeClient();
@@ -54,8 +60,10 @@ export async function loadS3IntoPinecone(fileKey: string) {
 
     console.log('Inserting vectors into pinecone...');
     const namespace = convertToAscii(fileKey);
+    console.log('Using namespace:', namespace);
 
     await pineconeIndex.namespace(namespace).upsert(vectors);
+    console.log('Successfully uploaded vectors to Pinecone');
 
     return documents[0];
 
@@ -63,10 +71,13 @@ export async function loadS3IntoPinecone(fileKey: string) {
 
 async function embedDocuments(doc: Document) {
     try {
+        console.log('Embedding document with content length:', doc.pageContent.length);
+        console.log('Document metadata:', doc.metadata);
+        
         const embeddings = await getEmbeddings(doc.pageContent);
         const hash = md5(doc.pageContent);
 
-        return {
+        const vector = {
             id: hash,
             values: embeddings,
             metadata: {
@@ -74,6 +85,9 @@ async function embedDocuments(doc: Document) {
                 text: doc.metadata.text,
             }
         } as Vector;
+        
+        console.log('Created vector with id:', hash, 'and metadata text length:', (doc.metadata.text as string)?.length || 0);
+        return vector;
     } catch (error) {
         console.log('Error embedding documents', error);
         throw error;
