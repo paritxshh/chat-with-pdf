@@ -24,7 +24,7 @@ export const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
-  title: 'ChatyPDF',
+  title: 'PaperTalk.ai',
 }
 
 export default function RootLayout({
