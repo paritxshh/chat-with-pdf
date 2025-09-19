@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Button } from './ui/button';
 import { MessageCircle, PlusCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import NewChatDialog from './NewChatDialog';
 
 type Props = {
     chats: DrizzleChat[],
@@ -81,12 +82,7 @@ const ChatSideBar = ({chats, chatId}: Props) => {
 
         {/* Footer with New Chat Button */}
         <div className='p-4 border-t border-gray-700'>
-            <Link href='/'>
-                <Button className='w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-poppins font-medium py-3 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl'>
-                    <PlusCircle className='mr-2 w-4 h-4'/>
-                    New Chat
-                </Button>
-            </Link>
+            <NewChatDialog />
         </div>
     </div>
   )
