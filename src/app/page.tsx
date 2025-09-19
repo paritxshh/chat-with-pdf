@@ -2,13 +2,12 @@ import { Button } from "@/components/ui/button";
 import { UserButton } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
-import { 
-  LogInIcon, 
-  FileText, 
-  MessageSquare, 
-  Zap, 
-  Shield, 
-  Users, 
+import {
+  LogInIcon,
+  FileText,
+  Zap,
+  Shield,
+  Users,
   ArrowRight,
   Star,
   Upload,
@@ -18,9 +17,9 @@ import {
 import FileUpload from "@/components/fileUpload";
 
 export default async function Home() {
-  const {userId} = await auth();
+  const { userId } = await auth();
   const isAuth = !!userId;
-  
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
       {/* Navigation */}
@@ -72,7 +71,7 @@ export default async function Home() {
             <p className="text-xl md:text-2xl text-slate-600 mb-8 max-w-3xl mx-auto font-poppins">
               Transform your documents into intelligent conversations. Ask questions, get instant answers, and unlock insights from your PDFs with AI-powered chat.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
               {isAuth ? (
                 <div className="w-full max-w-md">
@@ -335,7 +334,7 @@ export default async function Home() {
                 Transform your documents into intelligent conversations with AI-powered chat. Ask questions, get instant answers, and unlock insights from your PDFs.
               </p>
             </div>
-            
+
             <div>
               <h3 className="text-lg font-semibold mb-4 font-poppins">Product</h3>
               <ul className="space-y-2 text-slate-400 font-poppins">
@@ -345,7 +344,7 @@ export default async function Home() {
                 <li><a href="#" className="hover:text-white transition-colors">Documentation</a></li>
               </ul>
             </div>
-            
+
             <div>
               <h3 className="text-lg font-semibold mb-4 font-poppins">Support</h3>
               <ul className="space-y-2 text-slate-400 font-poppins">
@@ -356,7 +355,7 @@ export default async function Home() {
               </ul>
             </div>
           </div>
-          
+
           <div className="border-t border-slate-800 mt-8 pt-8 text-center text-slate-400 font-poppins">
             <p>&copy; {new Date().getFullYear()} <span className="font-bold">PaperTalk.ai</span> All rights reserved.</p>
           </div>
