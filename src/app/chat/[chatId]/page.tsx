@@ -2,7 +2,7 @@ import ChatSideBar from '@/components/ChatSideBar';
 import ChatComponent from '@/components/ChatComponent';
 import PDFViewer from '@/components/PDFViewer';
 import { db } from '@/lib/db';
-import { chats } from '@/lib/db/schema';
+import { chats, messages } from '@/lib/db/schema';
 import { auth } from '@clerk/nextjs/server';
 import { eq } from 'drizzle-orm';
 import { redirect } from 'next/navigation';
@@ -45,6 +45,19 @@ const ChatPage = async ({ params }: Props) => {
         return redirect('/');
     }
 
+    // Fetch existing messages for this chat
+    const existingMessages = await db
+        .select()
+        .from(messages)
+        .where(eq(messages.chatId, numericChatId));
+    
+    // Transform messages to match ChatComponent's expected format
+    const formattedMessages = existingMessages.map(msg => ({
+        id: msg.id.toString(),
+        role: msg.role as 'user' | 'assistant',
+        parts: [{ type: 'text' as const, text: msg.content }]
+    }));
+
     return (
             <div className='flex w-full h-dvh'>
                 {/* chat sidebar */}
@@ -59,7 +72,7 @@ const ChatPage = async ({ params }: Props) => {
 
                 {/* chat component */}
                 <div className='w-[30%] max-w-lg border-l-2 border-l-slate-200'>
-                    <ChatComponent chatId={numericChatId} />
+                    <ChatComponent chatId={numericChatId} initialMessages={formattedMessages} />
                 </div>
             </div>
     )

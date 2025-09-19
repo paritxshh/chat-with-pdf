@@ -7,6 +7,7 @@ import MessageList from './MessageList'
 
 type Props = {
     chatId: number;
+    initialMessages?: Message[];
 }
 
 type Message = {
@@ -18,18 +19,22 @@ type Message = {
     }>;
 }
 
-function ChatComponent({ chatId }: Props) {
+function ChatComponent({ chatId, initialMessages }: Props) {
     const [input, setInput] = useState('');
-    const [messages, setMessages] = useState<Message[]>([
-        {
-            id: 'welcome',
-            role: 'assistant',
-            parts: [{ 
-                type: 'text', 
-                text: '👋 Hello! I\'m Alex, your PDF assistant. I\'m here to help you understand and extract information from your PDF documents. Feel free to ask me anything about the content in your uploaded PDF!' 
-            }]
-        }
-    ]);
+    const [messages, setMessages] = useState<Message[]>(
+        initialMessages && initialMessages.length > 0 
+            ? initialMessages 
+            : [
+                {
+                    id: 'welcome',
+                    role: 'assistant',
+                    parts: [{ 
+                        type: 'text', 
+                        text: '👋 Hello! I\'m Alex, your PDF assistant. I\'m here to help you understand and extract information from your PDF documents. Feel free to ask me anything about the content in your uploaded PDF!' 
+                    }]
+                }
+            ]
+    );
     const [isLoading, setIsLoading] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 

@@ -1,6 +1,6 @@
 import { getContext } from '@/lib/context';
 import { db } from '@/lib/db';
-import { chats } from '@/lib/db/schema';
+import { chats, messages as messagesTable } from '@/lib/db/schema';
 import { openai } from '@ai-sdk/openai';
 import { generateText } from 'ai';
 import { eq } from 'drizzle-orm';
@@ -17,6 +17,14 @@ export async function POST(req: Request) {
         }
         const fileKey = _chats[0].fileKey;
         const lastMessage = messages[messages.length - 1];
+        
+        // Save user message to database
+        await db.insert(messagesTable).values({
+            chatId,
+            content: lastMessage.content,
+            role: "user",
+        });
+        
         const context = await getContext(lastMessage.content, fileKey)
 
         const prompt = {
@@ -53,6 +61,13 @@ export async function POST(req: Request) {
             model: openai('gpt-3.5-turbo'),
             messages: modelMessages,
             system: prompt.content,
+        });
+
+        // Save AI response to database
+        await db.insert(messagesTable).values({
+            chatId,
+            content: result.text,
+            role: "system",
         });
 
         return Response.json({
