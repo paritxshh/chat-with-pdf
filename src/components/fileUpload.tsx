@@ -61,7 +61,7 @@ const FileUpload = () => {
 
   return <div className='p-2 bg-white rounded-xl'>
     <div {...getRootProps({
-      className: 'border-dashed border-2 rounded-xl cursor-pointer bg-gray-50 py-8 flex justify-center items-center flex-col',
+      className: 'border-dashed border-4 rounded-xl cursor-pointer bg-gray-50 py-8 flex justify-center items-center flex-col',
     })}>
       <input {...getInputProps()} />
       {(uploading || isPending) ? (
@@ -73,7 +73,7 @@ const FileUpload = () => {
       ) : (
         <>
           <Inbox className='w-10 h-10 text-blue-500' />
-          <p className='mt-2 text-sm text-slate-400 font-poppins'>Drop PDF Here</p>
+          <p className='mt-2 text-sm text-slate-400 font-poppins font-semibold '>Drop PDF Here</p>
         </>
       )}
     </div>
