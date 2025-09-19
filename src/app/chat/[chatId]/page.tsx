@@ -33,17 +33,17 @@ const ChatPage = async ({ params }: Props) => {
     return (
             <div className='flex w-full h-dvh'>
                 {/* chat sidebar */}
-                <div className='flex-[1] max-w-xs'>
+                <div className='w-[20%] max-w-xs'>
                     <ChatSideBar chats={_chats} chatId={parseInt(chatId)} />
                 </div>
 
                 {/* pdf viewer */}
-                <div className='flex-[5]'>
+                <div className='flex-1'>
                     <PDFViewer pdf_url={currentChat?.pdfUrl || ''} />
                 </div>
 
                 {/* chat component */}
-                <div className='flex-[3] border-l-2 border-l-slate-200'>
+                <div className='w-[30%] max-w-lg border-l-2 border-l-slate-200'>
                     <ChatComponent chatId={parseInt(chatId)} />
                 </div>
             </div>

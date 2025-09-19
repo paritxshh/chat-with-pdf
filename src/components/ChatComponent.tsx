@@ -20,7 +20,16 @@ type Message = {
 
 function ChatComponent({ chatId }: Props) {
     const [input, setInput] = useState('');
-    const [messages, setMessages] = useState<Message[]>([]);
+    const [messages, setMessages] = useState<Message[]>([
+        {
+            id: 'welcome',
+            role: 'assistant',
+            parts: [{ 
+                type: 'text', 
+                text: '👋 Hello! I\'m Alex, your PDF assistant. I\'m here to help you understand and extract information from your PDF documents. Feel free to ask me anything about the content in your uploaded PDF!' 
+            }]
+        }
+    ]);
     const [isLoading, setIsLoading] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -79,23 +88,33 @@ function ChatComponent({ chatId }: Props) {
 
     return (
         <div className='relative flex flex-col h-dvh' id='message-container'>
-            <div className='sticky top-0 inset-x-0 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200/60 backdrop-blur-sm z-10'>
+            <div className='sticky top-0 inset-x-0 bg-white border-b border-gray-200/60 backdrop-blur-sm z-10 shadow-sm'>
                 <div className='px-6 py-4'>
-                    <div className='flex items-center gap-3'>
-                        <div className='flex items-center justify-center w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl shadow-sm'>
-                            <MessageCircle className='w-5 h-5 text-white' />
+                    <div className='flex items-center justify-between'>
+                        {/* Left side - Chatbot avatar and name */}
+                        <div className='flex items-center gap-3'>
+                            <div className='w-10 h-10 rounded-full overflow-hidden shadow-sm'>
+                                <img 
+                                    src="https://www.shutterstock.com/image-vector/chat-bot-icon-virtual-smart-600nw-2478937555.jpg" 
+                                    alt="Alex - Chat Bot Avatar" 
+                                    className='w-full h-full object-cover'
+                                />
+                            </div>
+                            <div className='flex flex-col'>
+                                <span className='text-base font-semibold text-gray-900 font-poppins'>
+                                    Alex
+                                </span>
+                                <span className='text-xs text-green-600 font-poppins flex items-center gap-1'>
+                                    <div className='w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse'></div>
+                                    Online
+                                </span>
+                            </div>
                         </div>
-                        <div className='flex-1'>
-                            <h3 className='text-xl font-bold font-poppins text-gray-900 tracking-tight'>
-                                PaperTalk<span className='bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent'>.ai</span>
-                            </h3>
-                            <p className='text-sm text-gray-600 font-medium font-poppins'>
-                                Chat with your PDF
-                            </p>
-                        </div>
-                        <div className='flex items-center gap-1 px-3 py-1.5 bg-white/70 rounded-full border border-gray-200/50'>
+
+                        {/* Right side - AI Powered badge */}
+                        <div className='flex items-center gap-1 px-3 py-1.5 bg-blue-50 rounded-full border border-blue-200/50'>
                             <Sparkles className='w-4 h-4 text-blue-500' />
-                            <span className='text-xs font-medium text-gray-700 font-poppins'>AI Powered</span>
+                            <span className='text-xs font-medium text-blue-700 font-poppins'>AI Powered</span>
                         </div>
                     </div>
                 </div>
