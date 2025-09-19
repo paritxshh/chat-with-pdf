@@ -10,7 +10,6 @@ import {
   Shield, 
   Users, 
   ArrowRight,
-  CheckCircle,
   Star,
   Upload,
   Brain,
