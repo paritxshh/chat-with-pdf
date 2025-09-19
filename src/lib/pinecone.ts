@@ -1,6 +1,6 @@
 import { Pinecone } from "@pinecone-database/pinecone";
 import { downloadFromS3 } from "./s3-server";
-import {PDFLoader} from '@langchain/community/document_loaders/fs/pdf';
+import { PDFLoader } from '@langchain/community/document_loaders/fs/pdf';
 import { Document, RecursiveCharacterTextSplitter } from "@pinecone-database/doc-splitter";
 import { getEmbeddings } from "./embeddings";
 import md5 from 'md5';
@@ -9,7 +9,10 @@ import { convertToAscii } from "./utils";
 type Vector = {
     id: string;
     values: number[];
-    metadata?: Record<string, any>;
+    metadata?: {
+        pageNumber: number;
+        text: string;
+    };
 };
 
 let pinecone: Pinecone | null = null;
@@ -40,7 +43,7 @@ export async function loadS3IntoPinecone(fileKey: string) {
         throw new Error('Failed to download from s3');
     }
     console.log('Downloaded file:', file_name);
-    
+
     const loader = new PDFLoader(file_name);
     const pages = (await loader.load()) as PDFPage[];
     console.log('Loaded PDF pages:', pages.length);
@@ -73,7 +76,7 @@ async function embedDocuments(doc: Document) {
     try {
         console.log('Embedding document with content length:', doc.pageContent.length);
         console.log('Document metadata:', doc.metadata);
-        
+
         const embeddings = await getEmbeddings(doc.pageContent);
         const hash = md5(doc.pageContent);
 
@@ -85,7 +88,7 @@ async function embedDocuments(doc: Document) {
                 text: doc.metadata.text,
             }
         } as Vector;
-        
+
         console.log('Created vector with id:', hash, 'and metadata text length:', (doc.metadata.text as string)?.length || 0);
         return vector;
     } catch (error) {
@@ -100,7 +103,8 @@ export const truncateStringByBytes = (str: string, bytes: number) => {
 }
 
 async function prepareDocument(page: PDFPage) {
-    let {pageContent, metadata}  = page;
+    let { pageContent } = page;
+    const { metadata } = page;
     pageContent = pageContent.replace(/\n/g, ' ');
     // split the docs
     const splitter = new RecursiveCharacterTextSplitter()

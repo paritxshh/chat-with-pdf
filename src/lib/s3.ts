@@ -22,11 +22,11 @@ export async function uploadToS3(file: File) {
             Body: file,
         }
 
-        const upload = s3.putObject(params).on('httpUploadProgress', evt => {
-            console.log('uploading to s3...', parseInt(((evt.loaded*100)/evt.total ).toString())) + '%';
-        }).promise()
+        const upload = s3.putObject(params).on('httpUploadProgress', (evt: AWS.S3.ManagedUpload.Progress) => {
+            console.log('uploading to s3...', parseInt(((evt.loaded*100)/evt.total ).toString()) + '%');
+        }).promise();
 
-        await upload.then(data => {
+        await upload.then(() => {
             console.log('successfully uploaded to s3', file_key);
         })
 
@@ -34,7 +34,10 @@ export async function uploadToS3(file: File) {
             file_key,
             file_name: file.name,
         })
-    } catch (error) {}
+    } catch (error) {
+        console.error('Error uploading to S3:', error);
+        throw error;
+    }
 }
 
 export function getS3Url(file_key: string) {

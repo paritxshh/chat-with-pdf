@@ -238,7 +238,7 @@ export default async function Home() {
                 ))}
               </div>
               <p className="text-slate-600 mb-4 font-poppins">
-                "PaperTalk.ai has revolutionized how I research. I can now quickly find specific information in lengthy documents and get instant answers to complex questions."
+                &quot;PaperTalk.ai has revolutionized how I research. I can now quickly find specific information in lengthy documents and get instant answers to complex questions.&quot;
               </p>
               <div className="flex items-center">
                 <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold mr-3">
@@ -258,7 +258,7 @@ export default async function Home() {
                 ))}
               </div>
               <p className="text-slate-600 mb-4 font-poppins">
-                "As a student, this tool has been a game-changer. I can quickly understand complex academic papers and extract key insights for my research."
+                &quot;As a student, this tool has been a game-changer. I can quickly understand complex academic papers and extract key insights for my research.&quot;
               </p>
               <div className="flex items-center">
                 <div className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-white font-semibold mr-3">
@@ -278,7 +278,7 @@ export default async function Home() {
                 ))}
               </div>
               <p className="text-slate-600 mb-4 font-poppins">
-                "The AI-powered analysis is incredibly accurate. It saves me hours of manual document review and helps me make better business decisions."
+                &quot;The AI-powered analysis is incredibly accurate. It saves me hours of manual document review and helps me make better business decisions.&quot;
               </p>
               <div className="flex items-center">
                 <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center text-white font-semibold mr-3">

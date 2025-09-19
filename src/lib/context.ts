@@ -37,7 +37,7 @@ export async function getContext(query: string, fileKey: string) {
     
     const matches = await getMatchesFromEmbeddings(queryEmbeddings, fileKey);
     console.log('Total matches found:', matches.length);
-    console.log('Matches:', matches.map(m => ({ score: m.score, text: (m.metadata as any)?.text?.substring(0, 100) })));
+    console.log('Matches:', matches.map(m => ({ score: m.score, text: (m.metadata as { text?: string })?.text?.substring(0, 100) })));
 
     const qualifyingDocs = matches.filter(match => match.score && match.score > 0.3);
     console.log('Qualifying docs (score > 0.3):', qualifyingDocs.length);
@@ -47,7 +47,7 @@ export async function getContext(query: string, fileKey: string) {
         pageNumber: number;
     }
 
-    let docs = qualifyingDocs.map(match => (match.metadata as Metadata).text);
+    const docs = qualifyingDocs.map(match => (match.metadata as Metadata).text);
     const context = docs.join('\n').substring(0, 3000);
     console.log('Final context length:', context.length);
     console.log('Context preview:', context.substring(0, 200));
